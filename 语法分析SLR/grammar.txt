@@ -1,0 +1,87 @@
+program -> compUnit
+compUnit -> decl compUnit
+compUnit -> funcDef compUnit
+compUnit -> $
+decl -> constDecl
+decl -> varDecl
+constDecl -> const bType constDef argConst ;
+argConst -> , constDef argConst
+argConst -> $
+bType -> int
+bType -> float
+constDef -> Ident = constInitVal
+constInitVal -> constExp
+constExp -> addExp
+varDecl -> bType varDef argVarDecl ;
+argVarDecl -> , varDef argVarDecl
+argVarDecl -> $
+varDef -> Ident
+varDef -> Ident = initVal
+initVal -> exp
+funcDef -> funcType Ident ( funcFParams ) block
+funcType -> void
+funcType -> int
+funcFParams -> funcFParam argFunctionF
+funcFParams -> $
+argFunctionF -> , funcFParam argFunctionF
+argFunctionF -> $
+funcFParam -> bType Ident
+block -> { blockItem }
+blockItem -> decl blockItem
+blockItem -> stmt blockItem
+blockItem -> $
+stmt -> lVal = exp ;
+stmt -> argExp ;
+stmt -> block
+stmt -> return argExp ;
+stmt -> if ( cond ) stmt else stmt
+stmt -> if ( cond ) stmt
+funcRParam -> exp
+funcRParams -> funcRParam argFunctionR
+funcRParams -> $
+argFunctionR -> , funcRParam argFunctionR
+argFunctionR -> $
+argExp -> exp
+argExp -> $
+exp -> addExp
+cond -> lOrExp
+lVal -> Ident
+primaryExp -> ( exp )
+primaryExp -> lVal
+primaryExp -> number
+number -> IntConst
+number -> floatConst
+unaryExp -> primaryExp
+unaryExp -> unaryOp unaryExp
+unaryExp -> Ident callFunc
+callFunc -> ( funcRParams )
+callFunc -> ( )
+unaryOp -> +
+unaryOp -> -
+unaryOp -> !
+mulExp -> unaryExp mulExpAtom
+mulExpAtom -> * unaryExp mulExpAtom
+mulExpAtom -> / unaryExp mulExpAtom
+mulExpAtom -> % unaryExp mulExpAtom
+mulExpAtom -> $
+addExp -> mulExp addExpAtom
+addExpAtom -> + mulExp addExpAtom
+addExpAtom -> - mulExp addExpAtom
+addExpAtom -> $
+relExp -> addExp relExpAtom
+relExpAtom -> < addExp relExpAtom
+relExpAtom -> > addExp relExpAtom
+relExpAtom -> <= addExp relExpAtom
+relExpAtom -> >= addExp relExpAtom
+relExpAtom -> $
+eqExp -> relExp eqExpAtom
+eqExpAtom -> == relExp eqExpAtom
+eqExpAtom -> != relExp eqExpAtom
+eqExpAtom -> $
+lAndExp -> eqExp lAndExpAtom
+lAndExpAtom -> && eqExp lAndExpAtom
+lAndExpAtom -> $
+lOrExp -> lAndExp lOrExpAtom
+lOrExpAtom -> || lAndExp lOrExpAtom
+lOrExpAtom -> $
+constExp -> addExp
